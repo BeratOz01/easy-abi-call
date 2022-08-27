@@ -15,3 +15,12 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mono-regular {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+}
+.mono-extralight {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 200;
+}

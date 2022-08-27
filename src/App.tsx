@@ -1,25 +1,35 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+
+// React Helmet
+import { Helmet } from "react-helmet";
+
+// Metamask Button
+import MetamaskButton from "./components/ui/MetamaskButton";
+
+// Web3 Hooks
+import { useWeb3 } from "./components/providers";
 
 function App() {
+  const { connect } = useWeb3();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Helmet>
+        <style>{"body { background-color:black }"}</style>
+      </Helmet>
+      <nav>
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5 my-20 flex-col lg:flex-row">
+          <div className="flex items-center">
+            <p className="self-center text-white mono-regular whitespace-nowrap text-2xl">
+              # Easy ABI Call #
+            </p>
+          </div>
+          <div className="flex items-center mt-5 lg:mt-0">
+            <MetamaskButton onClick={() => connect()} />
+          </div>
+        </div>
+      </nav>
+    </React.Fragment>
   );
 }
 
