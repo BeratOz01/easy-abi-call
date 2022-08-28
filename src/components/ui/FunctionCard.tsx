@@ -37,8 +37,25 @@ const orderParams = (
   functionInputs.forEach((input: any) => {
     params.push(states[input.name].value.toString());
   });
-
   return params;
+};
+
+const renderObject = (obj: { [key: string]: string }) => {
+  const filteredObj = Object.keys(obj).filter((elem) => isNaN(Number(elem)));
+  return (
+    <table className=" table-auto w-full">
+      <tbody>
+        {filteredObj.map((key: string) => {
+          return (
+            <tr key={key}>
+              <td>{key}</td>
+              <td>{obj[key]}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
 };
 
 const FunctionCard = (props: any) => {
@@ -69,12 +86,16 @@ const FunctionCard = (props: any) => {
         web3.utils.toChecksumAddress(address)
       );
 
-      if (props.elem?.stateMutability === "view") {
+      if (
+        props.elem?.stateMutability === "view" ||
+        props.elem?.stateMutability === "pure"
+      ) {
         const params = orderParams(abi, states, props.elem.name);
         var res;
         if (params.length > 0)
           res = await contract.methods?.[props.elem.name](...params).call();
         else res = await contract.methods?.[props.elem.name]().call();
+
         setResult(res);
       } else {
         if (!account?.data) {
@@ -85,22 +106,33 @@ const FunctionCard = (props: any) => {
           });
           return;
         }
+
+        const params = orderParams(abi, states, props.elem.name);
+        var result;
+        if (params.length > 0)
+          result = await contract.methods?.[props.elem.name](...params).send({
+            from: account.data,
+          });
+        else
+          result = await contract.methods?.[props.elem.name]().send({
+            from: account.data,
+          });
+        console.log();
+
+        setResult("Transaction Hash: " + result.transactionHash);
       }
     } catch (e) {
       dispatch({
         type: "SET_ERROR",
         payload:
-          "Error on contract call! Please check your parameters and try again.",
+          "Error on contract call! Please check your parameters, contract address and try again.",
       });
     }
   };
 
   return (
-    <div className="block p-3 w-full flex-row rounded-lg border  shadow-md  bg-gray-800 border-gray-700 ">
-      <p
-        className="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white"
-        onClick={() => console.log(states)}
-      >
+    <div className="block p-3 w-full flex-row rounded-lg border shadow-md bg-gray-800 border-gray-700">
+      <p className="mb-2 text-md font-bold tracking-tight text-gray-900 dark:text-white">
         {props.elem.name !== undefined && toCapitalCase(props.elem.name)}
       </p>
       {props.elem.inputs && props.elem.inputs.length > 0 && (
@@ -128,7 +160,20 @@ const FunctionCard = (props: any) => {
       >
         <p className="m-auto text-md">Query</p>
       </button>
-      {result && result.length > 0 && result}
+      {result && typeof result == "object" ? (
+        <>{renderObject(result)}</>
+      ) : typeof result == "string" && result.includes("Transaction Hash:") ? (
+        <a
+          className="text-md text-green-500 underline-offset-2 underline"
+          target={"_blank"}
+          rel="noreferrer"
+          href={`https://snowtrace.io/tx/${result.split(":")[1].trim()}`}
+        >
+          Success!! See On Block Explorer
+        </a>
+      ) : (
+        <p className="text-md text-green-500">{result}</p>
+      )}
     </div>
   );
 };

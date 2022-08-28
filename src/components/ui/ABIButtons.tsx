@@ -1,7 +1,7 @@
 import React from "react";
 
 // Constant
-import { ABI_BUTTONS, SECTION_INDEXES } from "../constants";
+import { ABI_BUTTONS } from "../constants";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -30,18 +30,10 @@ const ABIButton: React.FC<IProps> = ({ className = "" }) => {
 
   return (
     <div
-      className={`grid justify-center grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 ${className}`}
+      className={`grid justify-center grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 ${className}`}
     >
       {ABI_BUTTONS.map((abi, idx: number) => (
         <React.Fragment key={idx}>
-          {SECTION_INDEXES[idx] && (
-            <React.Fragment>
-              {idx !== 0 && <div className=" lg:col-span-2" />}
-              <div className="flex justify-center">
-                <p>{SECTION_INDEXES[idx]}</p>
-              </div>
-            </React.Fragment>
-          )}
           <button
             type="button"
             className={`border mono-regular text-green-500 font-medium rounded-lg text-sm h-full bg-gray-800 border-gray-700 hover:bg-gray-700 mr-2 mb-2 ${

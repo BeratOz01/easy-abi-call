@@ -23,6 +23,12 @@ const enhanceHook = (swrRes: any) => {
 
 export const useAccount = () => {
   const res = enhanceHook(useHooks((hooks: any) => hooks.useAccount)());
-
   return res;
+};
+
+export const useNetwork = () => {
+  const res = enhanceHook(useHooks((hooks: any) => hooks.useNetwork)());
+  return {
+    network: res,
+  };
 };

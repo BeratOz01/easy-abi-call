@@ -14,6 +14,7 @@ import { useWeb3 } from "./components/providers";
 
 // React Icons
 import { FiArrowUpRight } from "react-icons/fi";
+import { VscGithub, VscTwitter } from "react-icons/vsc";
 
 // Abi Display Component
 import AbiDisplay from "./components/ui/AbiDisplay";
@@ -21,9 +22,11 @@ import Functions from "./components/ui/Functions";
 
 // React-redux
 import { useDispatch } from "react-redux";
+import { useNetwork } from "./components/hooks";
 
 function App() {
-  const { connect } = useWeb3();
+  const { connect, switchNetwork, provider } = useWeb3();
+  const { network } = useNetwork();
   const dispatch = useDispatch();
   const [inputAddress, setInputAddress] = React.useState<string>("");
 
@@ -42,7 +45,7 @@ function App() {
       </Helmet>
       {/* Header */}
       <nav>
-        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5 my-20 flex-col lg:flex-row">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5 mt-20 mb-10 flex-col lg:flex-row">
           <div className="flex items-center">
             <p className="self-center text-white mono-regular whitespace-nowrap text-2xl mb-0">
               # Easy ABI Call #
@@ -53,6 +56,25 @@ function App() {
           </div>
         </div>
       </nav>
+
+      <header className="max-w-screen-xl mx-auto px-20 mono-regular text-center">
+        {provider && network && !network.isSupported && (
+          <div
+            className="p-4 mb-4 text-md text-red-500 bg-black rounded-none border-2 border-red-500 flex justify-center flex-col"
+            role="alert"
+          >
+            <p className="mb-0">
+              Wrong Network - Please switch to Avalanche C-Chain
+            </p>
+            <p
+              onClick={switchNetwork}
+              className="cursor-pointer mb-0 text-sm w-52 mx-auto mt-4 p-1 border-2 border-red-500 hover:text-black hover:bg-red-500 transition duration-500 ease-in-out animate-pulse"
+            >
+              Change Network
+            </p>
+          </div>
+        )}
+      </header>
 
       {/* Content */}
       <main className="px-4 md:px-6 py-2.5 text-white mx-auto max-w-screen-xl mono-regular space-y-2 text-center lg:text-left">
@@ -125,6 +147,33 @@ function App() {
           <AbiDisplay />
         </div>
         <Functions />
+        <div className="flex max-w-screen-xl space-y-5 justify-center pt-20 pb-14 flex-col">
+          <div className="flex flex-row justify-center space-x-9">
+            <VscGithub
+              className="text-green-500 cursor-pointer"
+              size={35}
+              onClick={() =>
+                window.open(
+                  "https://github.com/BeratOz01/easy-abi-call",
+                  "_blank"
+                )
+              }
+            />
+            <VscTwitter
+              className="text-green-500 cursor-pointer"
+              size={35}
+              onClick={() =>
+                window.open("https://twitter.com/0x2404", "_blank")
+              }
+            />
+          </div>
+          <div>
+            <p className="my-auto mb-0 text-center">Tip me!</p>
+            <p className="my-auto mb-0 text-center">
+              0x2a66F8dbade7d14ec046d2a1a31076d9114CF17C
+            </p>
+          </div>
+        </div>
       </main>
     </React.Fragment>
   );
