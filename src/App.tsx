@@ -15,9 +15,6 @@ import { useWeb3 } from "./components/providers";
 // React Icons
 import { FiArrowUpRight } from "react-icons/fi";
 
-// Redux
-import { useSelector } from "react-redux";
-
 function App() {
   const { connect } = useWeb3();
 
@@ -95,11 +92,11 @@ function App() {
 
       {/* Application */}
       <main className="px-4 md:px-6 py-2.5 mt-5 text-white mx-auto max-w-screen-xl mono-regular space-y-2 text-center lg:text-left">
-        <div className="flex flex-col space-y-5">
+        <div className="flex flex-col space-y-5 mb-12">
           <p className="text-center">Contract Address</p>
           <input
             type="text"
-            className="flex mx-auto w-3/6 text-center h-10 bg-gray-900 border-2 border-green-500 focus:outline-none"
+            className="flex mx-auto w-3/6 text-center h-10 bg-gray-900 border-4 border-green-500 focus:outline-none"
             placeholder="0x..."
             onChange={(e) => setInputAddress(e.target.value)}
             value={inputAddress}
@@ -107,8 +104,8 @@ function App() {
               window.localStorage.setItem("address", e.target.value)
             }
           />
-          <ABIButton />
         </div>
+        <ABIButton />
       </main>
     </React.Fragment>
   );
