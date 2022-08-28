@@ -59,8 +59,10 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
           })
         );
       } else {
+        const publicWeb3 = new Web3("https://api.avax.network/ext/bc/C/rpc");
         setWeb3Api((api) => ({
           ...api,
+          web3: publicWeb3,
           isLoading: false,
         }));
         console.error("Please, install Metamask.");

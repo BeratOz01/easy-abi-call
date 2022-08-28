@@ -7,6 +7,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body::-webkit-scrollbar {
+  width: .7em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(34 197 94);
+  outline: 1px solid slategrey;
+  border-width : 0
+}
+
+textarea::-webkit-scrollbar {
+  width: .3em;
+}
+
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: green;
+  outline: 1px solid slategrey;
+  border-width : 0
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -24,3 +49,15 @@ code {
   font-family: 'Roboto Mono', monospace;
   font-weight: 200;
 }
+
+.Toastify__toast-theme--dark {
+  background-color: black !important;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 400;
+}
+.Toastify__toast-theme--light {
+  background-color: black !important;
+  font-family: 'Roboto Mono', monospace !important;
+  font-weight: 400 !important;
+}
+

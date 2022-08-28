@@ -1,7 +1,7 @@
 import { actionTypes } from "../constants/types";
 
 const INITIAL_STATE: {
-  abi: any[];
+  abi: string[];
   address: string;
   indexes: number[];
 } = {
@@ -18,7 +18,7 @@ export const abiReducer = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         indexes: [...state.indexes, action.payload.idx],
-        abi: [...state.abi, action.payload.abi],
+        abi: [...state.abi, action.payload.abi.abi],
       };
     case actionTypes.REMOVE_FROM_ABI:
       return {
@@ -27,6 +27,22 @@ export const abiReducer = (state = INITIAL_STATE, action: any) => {
         indexes: state.indexes.filter(
           (idx: number) => idx !== action.payload.idx
         ),
+      };
+    case actionTypes.SET_ABI:
+      return {
+        ...state,
+        abi: action.payload,
+      };
+    case actionTypes.REMOVE_ALL:
+      return {
+        ...state,
+        abi: [],
+        indexes: [],
+      };
+    case actionTypes.SET_ADDRESS:
+      return {
+        ...state,
+        address: action.payload,
       };
     default:
       return state;

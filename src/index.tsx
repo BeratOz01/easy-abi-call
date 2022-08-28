@@ -10,6 +10,10 @@ import { Web3Provider } from "./components/providers";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 
+// react-toastify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -17,6 +21,12 @@ root.render(
   <Web3Provider>
     <Provider store={store}>
       <App />
+      <ToastContainer
+        position="top-right"
+        autoClose={false}
+        hideProgressBar
+        closeOnClick
+      />
     </Provider>
   </Web3Provider>
 );

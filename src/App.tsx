@@ -15,15 +15,25 @@ import { useWeb3 } from "./components/providers";
 // React Icons
 import { FiArrowUpRight } from "react-icons/fi";
 
+// Abi Display Component
+import AbiDisplay from "./components/ui/AbiDisplay";
+import Functions from "./components/ui/Functions";
+
+// React-redux
+import { useDispatch } from "react-redux";
+
 function App() {
   const { connect } = useWeb3();
-
+  const dispatch = useDispatch();
   const [inputAddress, setInputAddress] = React.useState<string>("");
 
   React.useEffect(() => {
     const address = localStorage.getItem("address");
-    if (address) setInputAddress(address);
-  }, []);
+    if (address) {
+      setInputAddress(address);
+      dispatch({ type: "SET_ADDRESS", payload: address });
+    }
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -88,24 +98,33 @@ function App() {
           connect your Metamask account! Otherwise you will not be able to send
           transaction.
         </p>
+        <p className="text-red-600">
+          !! After adding custom ABI to text area, make sure to click paint icon
+          for format check & update the ABI.
+        </p>
       </main>
 
       {/* Application */}
       <main className="px-4 md:px-6 py-2.5 mt-5 text-white mx-auto max-w-screen-xl mono-regular space-y-2 text-center lg:text-left">
-        <div className="flex flex-col space-y-5 mb-12">
-          <p className="text-center">Contract Address</p>
+        <div className="flex flex-col mb-12">
+          <p className="text-center mb-4">Contract Address</p>
           <input
             type="text"
-            className="flex mx-auto w-3/6 text-center h-10 bg-gray-900 border-4 border-green-500 focus:outline-none"
+            className="flex mx-auto w-3/6 mb-8 text-center h-10 bg-gray-900 border-4 border-green-500 focus:outline-none"
             placeholder="0x..."
-            onChange={(e) => setInputAddress(e.target.value)}
+            onChange={(e) => {
+              setInputAddress(e.target.value);
+            }}
             value={inputAddress}
-            onBlur={(e) =>
-              window.localStorage.setItem("address", e.target.value)
-            }
+            onBlur={(e) => {
+              window.localStorage.setItem("address", e.target.value);
+              dispatch({ type: "SET_ADDRESS", payload: e.target.value });
+            }}
           />
+          <ABIButton className="mb-8" />
+          <AbiDisplay />
         </div>
-        <ABIButton />
+        <Functions />
       </main>
     </React.Fragment>
   );

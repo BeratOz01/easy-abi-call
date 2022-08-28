@@ -1,11 +1,17 @@
-import { ABI_BUTTONS } from "../constants";
+import React from "react";
+
+// Constant
+import { ABI_BUTTONS, SECTION_INDEXES } from "../constants";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 
-const ABIButton = () => {
+type IProps = {
+  className?: string;
+};
+
+const ABIButton: React.FC<IProps> = ({ className = "" }) => {
   const dispatch = useDispatch();
-  const abi = useSelector((state: any) => state.abi.abi);
   const indexes = useSelector((state: any) => state.abi.indexes);
 
   const onClickAdd = (elem: any, idx: number) => {
@@ -23,16 +29,22 @@ const ABIButton = () => {
   };
 
   return (
-    <>
-      <div
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
-        onClick={() => console.log(abi)}
-      >
-        {ABI_BUTTONS.map((abi, idx) => (
+    <div
+      className={`grid justify-center grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 ${className}`}
+    >
+      {ABI_BUTTONS.map((abi, idx: number) => (
+        <React.Fragment key={idx}>
+          {SECTION_INDEXES[idx] && (
+            <React.Fragment>
+              {idx !== 0 && <div className=" lg:col-span-2" />}
+              <div className="flex justify-center">
+                <p>{SECTION_INDEXES[idx]}</p>
+              </div>
+            </React.Fragment>
+          )}
           <button
-            key={idx}
             type="button"
-            className={`border mono-regular text-green-500 font-medium rounded-lg text-sm h-full focus:ring-gray-600 bg-gray-800 border-gray-700 hover:bg-gray-700 mr-2 mb-2 ${
+            className={`border mono-regular text-green-500 font-medium rounded-lg text-sm h-full bg-gray-800 border-gray-700 hover:bg-gray-700 mr-2 mb-2 ${
               indexes.includes(idx) ? "bg-green-500 text-black" : ""
             }`}
             onClick={() => {
@@ -40,8 +52,8 @@ const ABIButton = () => {
                 dispatch({
                   type: "REMOVE_FROM_ABI",
                   payload: {
+                    abi: abi.abi,
                     idx: idx,
-                    abi,
                   },
                 });
               else onClickAdd(abi, idx);
@@ -49,9 +61,9 @@ const ABIButton = () => {
           >
             {abi.name}
           </button>
-        ))}
-      </div>
-    </>
+        </React.Fragment>
+      ))}
+    </div>
   );
 };
 
