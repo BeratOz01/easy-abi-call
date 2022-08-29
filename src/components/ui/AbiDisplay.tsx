@@ -30,8 +30,8 @@ const AbiDisplay = () => {
     <>
       <textarea
         rows={10}
-        className={`bg-gray-800 border-2 py-2 px-4 border-green-500 text-white w-full resize-none h-full focus:outline-none ${
-          error ? "border-red-500" : ""
+        className={`bg-gray-800 border-2 py-2 px-4  text-white w-full resize-none h-full focus:outline-none ${
+          error ? "border-red-500" : "border-green-500"
         }`}
         placeholder="Enter your ABI here..."
         onChange={onChange}
@@ -42,8 +42,11 @@ const AbiDisplay = () => {
         size={35}
         onClick={() => {
           try {
-            JSON.parse(abiInput);
-            dispatch({ type: "SET_ABI", payload: JSON.parse(abiInput) });
+            var parsedInput = JSON.parse(abiInput);
+            parsedInput = parsedInput.filter(
+              (elem: any) => elem.type && elem.type === "function"
+            );
+            dispatch({ type: "SET_ABI", payload: parsedInput });
             setError(false);
           } catch (e) {
             setError(true);

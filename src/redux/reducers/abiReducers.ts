@@ -15,6 +15,7 @@ export const abiReducer = (state = INITIAL_STATE, action: any) => {
     case actionTypes.ADD_TO_ABI:
       const isExist = state.indexes.includes(action.payload.idx as number);
       if (isExist) return state;
+
       return {
         ...state,
         indexes: [...state.indexes, action.payload.idx],
